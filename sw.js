@@ -1,4 +1,4 @@
-const CACHE_NAME='water-system-v2';
+const CACHE_NAME='water-system-v3';
 const ASSETS=['./','./index.html','./mount.js','./manifest.json'];
 self.addEventListener('install',e=>{
  self.skipWaiting();
