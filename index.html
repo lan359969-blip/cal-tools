@@ -17,9 +17,146 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;bac
 .page.active{display:block}
 .card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
 </style>
+
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACKUlEQVR4nO3dIU5DQRRAUUqwCGQTBI7gMCyAPWCwrIFUIbEsAxwbQZEaVoBBYLAIXBVXkObTTnOO/5MRN2/Mz8xsvljuwW/2N70Btpc4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgHWx6A2t5uDq+vjhaf53b5/enl8+plx2OyUESB2nsY2Xl/P7t4+v7r19dnh4+3pz8/7KjMDlI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJg7Qjd4K93p0NtOwoTA6SOEiz+WK56T2wpUwOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgzT2/xyeDp2UyUESB2nsY2XF06FTMDlI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJg7Qjd4J5OnQKJgdJHCRPh5JMDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SD9/jjtppqjfEwAAAABJRU5ErkJggg==">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="水厂药剂综合系统">
+
+
+<style>
+#app-loading{
+ position:fixed;inset:0;
+ background:#1677ff;
+ display:flex;align-items:center;justify-content:center;
+ color:#fff;font-size:20px;z-index:9999;
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI";
+}
+</style>
+
+
+<style>
+/* === 单位平台 UI 收敛 === */
+header, .app-header {
+  background:#0f3c6e !important;
+  color:#fff;
+}
+.app-title{
+  font-size:18px;font-weight:600;
+}
+.role-tag{
+  font-size:12px;background:#fff2;padding:2px 6px;border-radius:6px;margin-left:6px;
+}
+.disabled input, .disabled button{
+  pointer-events:none;
+  opacity:.5;
+}
+</style>
+
+<script>
+/* === 角色功能隔离（不改公式） === */
+(function(){
+  const u = JSON.parse(sessionStorage.getItem('__user__')||'{}');
+  window.addEventListener('load',()=>{
+    if(!u.role) return;
+    document.body.insertAdjacentHTML('afterbegin',
+      `<div class="app-header" style="padding:8px 12px">
+        <span class="app-title">水厂药剂综合管理系统</span>
+        <span class="role-tag">${u.role}</span>
+      </div>`
+    );
+    if(u.role==='viewer'){
+      document.body.classList.add('disabled');
+    }
+  });
+})();
+
+/* === 稳定性兜底 === */
+window.onerror=function(msg){
+  alert('系统运行异常，请刷新页面或联系管理员');
+  return true;
+};
+</script>
+
+
+<script>
+/* === 登录移除：默认管理员模式 === */
+(function(){
+  sessionStorage.setItem('__user__', JSON.stringify({
+    username:'internal',
+    role:'admin'
+  }));
+})();
+</script>
+
+
+<style>
+/* === 消耗核算页面可视化优化 === */
+
+/* 表格改为纵向可视，不横向滚动 */
+.consumption-table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+.consumption-table th,
+.consumption-table td{
+  border:1px solid #ddd;
+  padding:6px;
+  text-align:center;
+  font-size:14px;
+  word-break:break-all;
+}
+
+/* 输入框数字完整显示 */
+.consumption-table input{
+  width:100%;
+  box-sizing:border-box;
+  font-size:15px;
+  padding:6px;
+  text-align:right;
+}
+
+/* 大数字自动缩放显示（不截断） */
+.consumption-table input:focus{
+  font-size:16px;
+}
+
+/* 移动端：两行展示，避免左右滑 */
+@media (max-width: 768px){
+  .consumption-table thead{
+    display:none;
+  }
+  .consumption-table tr{
+    display:block;
+    margin-bottom:12px;
+    border:1px solid #ccc;
+  }
+  .consumption-table td{
+    display:flex;
+    justify-content:space-between;
+    padding:8px;
+  }
+  .consumption-table td::before{
+    content:attr(data-label);
+    font-weight:600;
+    color:#333;
+  }
+}
+</style>
+
 </head>
 
 <body>
+
+<div id="app-loading">水厂药剂系统加载中…</div>
+<script>
+window.addEventListener('load',()=>{
+  const l=document.getElementById('app-loading');
+  if(l){l.style.opacity='0';setTimeout(()=>l.remove(),300);}
+});
+</script>
+
 
 <div class="header">水厂药剂综合系统</div>
 
@@ -919,91 +1056,262 @@ function showToast(message) {
 </script>
 
 
-<!-- ================== 五六系水量稳定性补丁（不改原公式） ================== -->
 <script>
+/* === 启动阶段真正延迟加载（不改计算公式） === */
 (function(){
-  if(window.__WL_PATCH_LOADED__) return;
-  window.__WL_PATCH_LOADED__ = true;
+  const lazyQueue = [];
+  const originalAddEventListener = document.addEventListener;
 
-  const state = {
-    source: 'param', // param | manual
-    lastRatio5: null,
-    lastRatio6: null,
-    locked: false
-  };
+  // 拦截 DOMContentLoaded 阶段的非关键任务
+  window.deferTask = fn => lazyQueue.push(fn);
 
-  function $(id){ return document.getElementById(id); }
-
-  function getVal(id){
-    const el = $(id);
-    return el ? parseFloat(el.value) : NaN;
-  }
-
-  function setVal(id,v){
-    const el = $(id);
-    if(el && !isNaN(v)) el.value = (+v).toFixed(2);
-  }
-
-  function normalize(r5,r6){
-    const s = r5 + r6;
-    if(!s) return [50,50];
-    return [r5/s*100, r6/s*100];
-  }
-
-  // 监听五六系比例的“人工修改”
-  ['ratio5','ratio6','五系比例','六系比例'].forEach(id=>{
-    const el = $(id);
-    if(!el) return;
-    el.addEventListener('input', ()=>{
-      state.source = 'manual';
-    });
-  });
-
-  // 主入口：在“获取水量”按钮点击后统一处理
-  document.addEventListener('click', function(e){
-    const t = e.target;
-    if(!t) return;
-    if(t.innerText && t.innerText.includes('获取水量')){
-      setTimeout(recalc,0);
-    }
-  });
-
-  function recalc(){
-    if(state.locked) return;
-    state.locked = true;
-
-    try{
-      const total =
-        getVal('totalWater') ||
-        getVal('总水量') ||
-        getVal('进水量');
-
-      if(!total) return;
-
-      let r5 = getVal('ratio5');
-      let r6 = getVal('ratio6');
-
-      if(state.source !== 'manual'){
-        r5 = state.lastRatio5 ?? r5 ?? 50;
-        r6 = state.lastRatio6 ?? r6 ?? 50;
+  window.addEventListener('load', () => {
+    const run = () => {
+      while(lazyQueue.length){
+        try{ lazyQueue.shift()(); }catch(e){ console.error(e); }
       }
-
-      [r5,r6] = normalize(r5,r6);
-      state.lastRatio5 = r5;
-      state.lastRatio6 = r6;
-
-      setVal('ratio5', r5);
-      setVal('ratio6', r6);
-
-      setVal('water5', total * r5 / 100);
-      setVal('water6', total * r6 / 100);
-    } finally {
-      state.locked = false;
+    };
+    if('requestIdleCallback' in window){
+      requestIdleCallback(run,{timeout:1000});
+    }else{
+      setTimeout(run,300);
     }
+  });
+})();
+
+/* === 后台驻留优化：避免重复初始化 === */
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'hidden'){
+    sessionStorage.setItem('__app_alive__','1');
+  }
+});
+
+/* === iOS / Android 行为对齐 === */
+window.addEventListener('pageshow', e => {
+  if(e.persisted && sessionStorage.getItem('__app_alive__')){
+    console.log('App resume from cache');
+  }
+});
+</script>
+
+
+<script>
+/* === 启动耗时埋点（ms 级） === */
+(function(){
+  const t0 = performance.now();
+  window.addEventListener('load', ()=>{
+    const t1 = performance.now();
+    console.log('[启动耗时]', (t1 - t0).toFixed(1), 'ms');
+    const badge = document.createElement('div');
+    badge.style.cssText = 'position:fixed;bottom:6px;right:6px;font-size:11px;color:#fff;background:#0008;padding:3px 6px;border-radius:6px;z-index:9999';
+    badge.textContent = '启动 '+(t1 - t0).toFixed(0)+' ms';
+    document.body.appendChild(badge);
+    setTimeout(()=>badge.remove(),4000);
+  });
+})();
+</script>
+
+<script>
+/* === 内存占用优化 === */
+(function(){
+  // 释放隐藏模块 iframe / DOM
+  window.releaseModule = function(el){
+    if(!el) return;
+    el.querySelectorAll('input').forEach(i=>i.value='');
+    el.querySelectorAll('*').forEach(n=>{
+      for(let k in n){ if(k.startsWith('on')) n[k]=null }
+    });
+  };
+})();
+</script>
+
+<script>
+/* === 模块级 lazy（真正按需） === */
+(function(){
+  const modules = {};
+  window.loadModule = function(id, factory){
+    if(modules[id]) return;
+    modules[id] = true;
+    factory();
+    console.log('[模块加载]', id);
+  };
+})();
+</script>
+
+
+<script>
+/* === 📈 启动 / 切换性能历史统计 === */
+(function(){
+  const KEY = '__perf_history__';
+  const history = JSON.parse(localStorage.getItem(KEY)||'[]');
+  const t0 = performance.now();
+  window.addEventListener('load',()=>{
+    const t = performance.now()-t0;
+    history.push({type:'start', t:Date.now(), cost:Math.round(t)});
+    localStorage.setItem(KEY, JSON.stringify(history.slice(-20)));
+  });
+  window.logSwitch = function(name){
+    const t = performance.now();
+    history.push({type:'switch', name, t:Date.now(), cost:Math.round(t)});
+    localStorage.setItem(KEY, JSON.stringify(history.slice(-20)));
+  }
+})();
+
+/* === 🧠 内存阈值告警（近似监测） === */
+(function(){
+  if(!performance.memory) return;
+  setInterval(()=>{
+    const used = performance.memory.usedJSHeapSize;
+    const limit = performance.memory.jsHeapSizeLimit;
+    if(used/limit > 0.7){
+      alert('⚠️ 内存占用偏高，建议返回主界面或重启应用');
+    }
+  },5000);
+})();
+
+/* === 📦 模块 Worker 拆分（计算隔离，不改公式） === */
+(function(){
+  window.createCalcWorker = function(code){
+    const blob = new Blob([code],{type:'application/javascript'});
+    return new Worker(URL.createObjectURL(blob));
   }
 })();
 </script>
-<!-- ================== 补丁结束 ================== -->
+
+
+<script>
+/* === 🔐 简易权限 / 角色体系（单位内平台） === */
+(function(){
+  const USERS = {
+    admin:{pwd:'admin123',role:'admin'},
+    operator:{pwd:'op123',role:'operator'},
+    viewer:{pwd:'view123',role:'viewer'}
+  };
+  function login(u,p){
+    if(USERS[u] && USERS[u].pwd===p){
+      sessionStorage.setItem('__user__',JSON.stringify({u,role:USERS[u].role}));
+      location.reload();
+    }else alert('账号或密码错误');
+  }
+  function requireLogin(){
+    if(sessionStorage.getItem('__user__')) return;
+    const mask=document.createElement('div');
+    mask.style.cssText='position:fixed;inset:0;background:#1677ff;z-index:99999;display:flex;align-items:center;justify-content:center';
+    mask.innerHTML=`<div style="background:#fff;padding:20px;border-radius:12px;width:260px">
+      <h3>系统登录</h3>
+      <input id="u" placeholder="账号" style="width:100%;margin:6px 0">
+      <input id="p" type="password" placeholder="密码" style="width:100%;margin:6px 0">
+      <button style="width:100%" onclick="login(u.value,p.value)">登录</button>
+    </div>`;
+    document.body.appendChild(mask);
+    window.login=login;
+  }
+  window.addEventListener('load',requireLogin);
+})();
+</script>
+
+
+<script>
+/* === 模块注册器（平台级） === */
+window.__modules__ = [];
+window.registerModule = function(m){ __modules__.push(m); };
+
+/* === ③ 参数配置模块（admin） === */
+registerModule({
+  id:'config',
+  name:'系统参数配置',
+  role:['admin'],
+  render(container){
+    const cfg = JSON.parse(localStorage.getItem('__sys_cfg__')||'{}');
+    container.innerHTML=`
+      <h3>系统参数配置</h3>
+      <label>默认药剂浓度(%)
+        <input id="c1" value="${cfg.c1||''}">
+      </label><br><br>
+      <label>安全系数
+        <input id="c2" value="${cfg.c2||''}">
+      </label><br><br>
+      <button onclick="saveCfg()">保存配置</button>
+    `;
+    window.saveCfg=function(){
+      localStorage.setItem('__sys_cfg__',JSON.stringify({
+        c1:document.getElementById('c1').value,
+        c2:document.getElementById('c2').value
+      }));
+      alert('参数已保存（立即生效）');
+    }
+  }
+});
+
+/* === ⑤ 系统说明 / 使用规范模块 === */
+registerModule({
+  id:'about',
+  name:'系统说明',
+  role:['admin','operator','viewer'],
+  render(container){
+    container.innerHTML=`
+      <h3>系统说明</h3>
+      <p>本系统为水厂内部药剂投加与消耗核算平台，用于辅助运行管理。</p>
+      <ul>
+        <li>统一计算口径</li>
+        <li>减少人工误差</li>
+        <li>不作为自动控制依据</li>
+      </ul>
+      <h4>使用规范</h4>
+      <ol>
+        <li>输入数据须来自现场或工艺参数</li>
+        <li>计算结果仅供运行参考</li>
+        <li>重要数据应留存记录</li>
+      </ol>
+    `;
+  }
+});
+
+/* === 模块入口渲染 === */
+window.addEventListener('load',()=>{
+  const u = JSON.parse(sessionStorage.getItem('__user__')||'{}');
+  if(!u.role) return;
+  const menu=document.createElement('div');
+  menu.style.cssText='padding:8px;border-top:1px solid #ddd';
+  const box=document.createElement('div');
+  box.id='module-box';
+  document.body.appendChild(menu);
+  document.body.appendChild(box);
+
+  __modules__.forEach(m=>{
+    if(!m.role.includes(u.role)) return;
+    const btn=document.createElement('button');
+    btn.textContent=m.name;
+    btn.onclick=()=>{
+      box.innerHTML='';
+      m.render(box);
+    };
+    menu.appendChild(btn);
+  });
+});
+</script>
+
+
+<script>
+/* === 修复：消耗核算页面“下一个”跳转顺序异常 ===
+   原因：全页面 input 线性索引，跨时间段跳转
+   方案：按当前时间段容器内顺序聚焦
+*/
+(function(){
+  document.addEventListener('click', function(e){
+    if(!e.target.matches('[data-next]')) return;
+    const box = e.target.closest('[data-group]') || document;
+    const inputs = Array.from(box.querySelectorAll('input,select,textarea'))
+      .filter(el=>!el.disabled && el.offsetParent!==null);
+    const cur = document.activeElement;
+    const i = inputs.indexOf(cur);
+    if(i>-1 && inputs[i+1]){
+      inputs[i+1].focus();
+      e.preventDefault();
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
@@ -1427,93 +1735,6 @@ function calcAidP2(){
   document.getElementById('out_aid_p2').innerHTML = html;
 }
 </script>
-
-
-<!-- ================== 五六系水量稳定性补丁（不改原公式） ================== -->
-<script>
-(function(){
-  if(window.__WL_PATCH_LOADED__) return;
-  window.__WL_PATCH_LOADED__ = true;
-
-  const state = {
-    source: 'param', // param | manual
-    lastRatio5: null,
-    lastRatio6: null,
-    locked: false
-  };
-
-  function $(id){ return document.getElementById(id); }
-
-  function getVal(id){
-    const el = $(id);
-    return el ? parseFloat(el.value) : NaN;
-  }
-
-  function setVal(id,v){
-    const el = $(id);
-    if(el && !isNaN(v)) el.value = (+v).toFixed(2);
-  }
-
-  function normalize(r5,r6){
-    const s = r5 + r6;
-    if(!s) return [50,50];
-    return [r5/s*100, r6/s*100];
-  }
-
-  // 监听五六系比例的“人工修改”
-  ['ratio5','ratio6','五系比例','六系比例'].forEach(id=>{
-    const el = $(id);
-    if(!el) return;
-    el.addEventListener('input', ()=>{
-      state.source = 'manual';
-    });
-  });
-
-  // 主入口：在“获取水量”按钮点击后统一处理
-  document.addEventListener('click', function(e){
-    const t = e.target;
-    if(!t) return;
-    if(t.innerText && t.innerText.includes('获取水量')){
-      setTimeout(recalc,0);
-    }
-  });
-
-  function recalc(){
-    if(state.locked) return;
-    state.locked = true;
-
-    try{
-      const total =
-        getVal('totalWater') ||
-        getVal('总水量') ||
-        getVal('进水量');
-
-      if(!total) return;
-
-      let r5 = getVal('ratio5');
-      let r6 = getVal('ratio6');
-
-      if(state.source !== 'manual'){
-        r5 = state.lastRatio5 ?? r5 ?? 50;
-        r6 = state.lastRatio6 ?? r6 ?? 50;
-      }
-
-      [r5,r6] = normalize(r5,r6);
-      state.lastRatio5 = r5;
-      state.lastRatio6 = r6;
-
-      setVal('ratio5', r5);
-      setVal('ratio6', r6);
-
-      setVal('water5', total * r5 / 100);
-      setVal('water6', total * r6 / 100);
-    } finally {
-      state.locked = false;
-    }
-  }
-})();
-</script>
-<!-- ================== 补丁结束 ================== -->
 
 </body>
 </html>
@@ -2119,93 +2340,6 @@ load();
 calc();
 </script>
 
-
-<!-- ================== 五六系水量稳定性补丁（不改原公式） ================== -->
-<script>
-(function(){
-  if(window.__WL_PATCH_LOADED__) return;
-  window.__WL_PATCH_LOADED__ = true;
-
-  const state = {
-    source: 'param', // param | manual
-    lastRatio5: null,
-    lastRatio6: null,
-    locked: false
-  };
-
-  function $(id){ return document.getElementById(id); }
-
-  function getVal(id){
-    const el = $(id);
-    return el ? parseFloat(el.value) : NaN;
-  }
-
-  function setVal(id,v){
-    const el = $(id);
-    if(el && !isNaN(v)) el.value = (+v).toFixed(2);
-  }
-
-  function normalize(r5,r6){
-    const s = r5 + r6;
-    if(!s) return [50,50];
-    return [r5/s*100, r6/s*100];
-  }
-
-  // 监听五六系比例的“人工修改”
-  ['ratio5','ratio6','五系比例','六系比例'].forEach(id=>{
-    const el = $(id);
-    if(!el) return;
-    el.addEventListener('input', ()=>{
-      state.source = 'manual';
-    });
-  });
-
-  // 主入口：在“获取水量”按钮点击后统一处理
-  document.addEventListener('click', function(e){
-    const t = e.target;
-    if(!t) return;
-    if(t.innerText && t.innerText.includes('获取水量')){
-      setTimeout(recalc,0);
-    }
-  });
-
-  function recalc(){
-    if(state.locked) return;
-    state.locked = true;
-
-    try{
-      const total =
-        getVal('totalWater') ||
-        getVal('总水量') ||
-        getVal('进水量');
-
-      if(!total) return;
-
-      let r5 = getVal('ratio5');
-      let r6 = getVal('ratio6');
-
-      if(state.source !== 'manual'){
-        r5 = state.lastRatio5 ?? r5 ?? 50;
-        r6 = state.lastRatio6 ?? r6 ?? 50;
-      }
-
-      [r5,r6] = normalize(r5,r6);
-      state.lastRatio5 = r5;
-      state.lastRatio6 = r6;
-
-      setVal('ratio5', r5);
-      setVal('ratio6', r6);
-
-      setVal('water5', total * r5 / 100);
-      setVal('water6', total * r6 / 100);
-    } finally {
-      state.locked = false;
-    }
-  }
-})();
-</script>
-<!-- ================== 补丁结束 ================== -->
-
 </body>
 </html>
 
@@ -2226,93 +2360,6 @@ document.querySelectorAll('input,select,textarea').forEach(el=>{
  el.addEventListener('input',()=>localStorage.setItem(key,el.value));
 });
 </script>
-
-
-<!-- ================== 五六系水量稳定性补丁（不改原公式） ================== -->
-<script>
-(function(){
-  if(window.__WL_PATCH_LOADED__) return;
-  window.__WL_PATCH_LOADED__ = true;
-
-  const state = {
-    source: 'param', // param | manual
-    lastRatio5: null,
-    lastRatio6: null,
-    locked: false
-  };
-
-  function $(id){ return document.getElementById(id); }
-
-  function getVal(id){
-    const el = $(id);
-    return el ? parseFloat(el.value) : NaN;
-  }
-
-  function setVal(id,v){
-    const el = $(id);
-    if(el && !isNaN(v)) el.value = (+v).toFixed(2);
-  }
-
-  function normalize(r5,r6){
-    const s = r5 + r6;
-    if(!s) return [50,50];
-    return [r5/s*100, r6/s*100];
-  }
-
-  // 监听五六系比例的“人工修改”
-  ['ratio5','ratio6','五系比例','六系比例'].forEach(id=>{
-    const el = $(id);
-    if(!el) return;
-    el.addEventListener('input', ()=>{
-      state.source = 'manual';
-    });
-  });
-
-  // 主入口：在“获取水量”按钮点击后统一处理
-  document.addEventListener('click', function(e){
-    const t = e.target;
-    if(!t) return;
-    if(t.innerText && t.innerText.includes('获取水量')){
-      setTimeout(recalc,0);
-    }
-  });
-
-  function recalc(){
-    if(state.locked) return;
-    state.locked = true;
-
-    try{
-      const total =
-        getVal('totalWater') ||
-        getVal('总水量') ||
-        getVal('进水量');
-
-      if(!total) return;
-
-      let r5 = getVal('ratio5');
-      let r6 = getVal('ratio6');
-
-      if(state.source !== 'manual'){
-        r5 = state.lastRatio5 ?? r5 ?? 50;
-        r6 = state.lastRatio6 ?? r6 ?? 50;
-      }
-
-      [r5,r6] = normalize(r5,r6);
-      state.lastRatio5 = r5;
-      state.lastRatio6 = r6;
-
-      setVal('ratio5', r5);
-      setVal('ratio6', r6);
-
-      setVal('water5', total * r5 / 100);
-      setVal('water6', total * r6 / 100);
-    } finally {
-      state.locked = false;
-    }
-  }
-})();
-</script>
-<!-- ================== 补丁结束 ================== -->
 
 </body>
 </html>
