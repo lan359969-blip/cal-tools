@@ -1,4 +1,4 @@
-const CACHE_NAME = 'drug-system-cache-v4';
+const CACHE_NAME = 'drug-system-cache-v6';
 
 const FILES_TO_CACHE = [
   './',
