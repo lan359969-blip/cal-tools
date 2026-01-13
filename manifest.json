@@ -1,9 +1,0 @@
-{
-  "name": "水厂药剂综合系统",
-  "short_name": "药剂系统",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1677ff",
-  "description": "加药、配药、消耗核算工程系统"
-}
