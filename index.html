@@ -1,35 +1,64 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>水厂药剂综合系统</title>
-<link rel="manifest" href="manifest.json"/>
-<meta name="theme-color" content="#1677ff"/>
-<style>
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI}
-.nav{display:flex;height:52px;background:#1677ff}
-.nav button{flex:1;border:none;background:#1677ff;color:#fff;font-size:16px}
-.nav button.active{background:#0958d9}
-.page{display:none;padding:12px}
-.page.active{display:block}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>水厂药剂综合系统</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1677ff">
+
+  <style>
+    html,body{
+      margin:0;
+      padding:0;
+      height:100%;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+    }
+    .nav{
+      display:flex;
+      height:52px;
+      background:#1677ff;
+    }
+    .nav button{
+      flex:1;
+      border:none;
+      background:#1677ff;
+      color:#fff;
+      font-size:16px;
+    }
+    .nav button.active{
+      background:#0958d9;
+    }
+    .page{
+      display:none;
+      padding:12px;
+    }
+    .page.active{
+      display:block;
+    }
+  </style>
 </head>
+
 <body>
+
 <div class="nav">
-  <button data-page="sys1" class="active">加药加氯</button>
+  <button class="active" data-page="sys1">加药加氯</button>
   <button data-page="sys2">配药系统</button>
   <button data-page="sys3">消耗核算</button>
 </div>
+
 <div id="sys1" class="page active"></div>
 <div id="sys2" class="page"></div>
 <div id="sys3" class="page"></div>
 
 <script src="mount.js"></script>
+
 <script>
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js');
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
 }
 </script>
+
 </body>
 </html>
