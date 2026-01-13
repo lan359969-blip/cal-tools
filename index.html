@@ -3,80 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>水厂药剂综合系统</title>
+  <title>水厂药剂综合计算系统</title>
 
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#1976d2" />
 
   <style>
-   body {
+    body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont;
       height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 0;   /* 🔴 关键 */
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+      background: #f4f6f8;
     }
+
     header {
       background: #1976d2;
-      color: #fff;
       padding: 10px;
       display: flex;
       gap: 10px;
     }
+
     header button {
-      background: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.2);
       border: none;
       color: #fff;
       padding: 8px 16px;
-      border-radius: 4px;
+      border-radius: 6px;
+      font-size: 14px;
       cursor: pointer;
     }
+
     header button.active {
       background: #fff;
       color: #1976d2;
+      font-weight: bold;
     }
+
     iframe {
+      flex: 1;
       width: 100%;
-      height: 100%;
-      flex: 1 1 auto;
       border: none;
-      min-height: 0;   /* 🔴 iOS 必须 */
-      display: block;  /* 🔴 iOS 必须 */
-     }
-     #frameWrap {
-       flex: 1;
-       min-height: 0;   /* 🔴 决定生死的一行 */
-     }
+      background: #fff;
+    }
   </style>
 </head>
 
 <body>
   <header>
-    <button data-page="sys1.html" class="active">加药加氯</button>
+    <button class="active" data-page="sys1.html">加药加氯</button>
     <button data-page="sys2.html">配药系统</button>
     <button data-page="sys3.html">药剂消耗</button>
   </header>
 
-  <div id="frameWrap">
   <iframe id="appFrame" src="sys1.html"></iframe>
-  </div>
 
   <script>
-    const buttons = document.querySelectorAll('header button');
-    const frame = document.getElementById('appFrame');
+    const buttons = document.querySelectorAll("header button");
+    const frame = document.getElementById("appFrame");
 
     buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+      btn.addEventListener("click", () => {
+        buttons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
         frame.src = btn.dataset.page;
       });
     });
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js');
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js");
       });
     }
   </script>
