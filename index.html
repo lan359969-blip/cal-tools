@@ -3,138 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>水厂药剂计算系统平台</title>
+  <title>水厂药剂综合系统</title>
 
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0b5cff" />
+  <meta name="theme-color" content="#1976d2" />
 
   <style>
-    :root {
-      --primary: #0b5cff;
-      --bg: #f4f6f8;
-      --card: #ffffff;
-      --text-main: #1f2937;
-      --text-sub: #6b7280;
-    }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
-      background: var(--bg);
-      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     header {
-      background: linear-gradient(135deg, #0b5cff, #3b82f6);
+      background: #1976d2;
       color: #fff;
-      padding: 16px;
-      text-align: center;
+      padding: 10px;
+      display: flex;
+      gap: 10px;
     }
-    header small {
-      display: block;
-      font-size: 12px;
-      opacity: 0.85;
-      margin-top: 4px;
-    }
-    .container {
-      max-width: 720px;
-      margin: auto;
-      padding: 20px;
-    }
-    .status {
-      font-size: 12px;
-      margin-bottom: 12px;
-      color: var(--text-sub);
-      text-align: center;
-    }
-    .grid {
-      display: grid;
-      gap: 16px;
-    }
-    .card {
-      background: var(--card);
-      border-radius: 10px;
-      padding: 18px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    header button {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 4px;
       cursor: pointer;
     }
-    .card-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 6px;
+    header button.active {
+      background: #fff;
+      color: #1976d2;
     }
-    .card-desc {
-      font-size: 13px;
-      color: var(--text-sub);
-      line-height: 1.6;
-    }
-    footer {
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-sub);
-      padding: 20px;
-    }
-    .admin {
-      display:none;
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
     }
   </style>
 </head>
 
 <body>
   <header>
-    水厂药剂计算系统平台
-    <small>系统版本 v1.0.0 · 构建时间 2026-01-13 01:32</small>
+    <button data-page="sys1.html" class="active">加药加氯</button>
+    <button data-page="sys2.html">配药系统</button>
+    <button data-page="sys3.html">药剂消耗</button>
   </header>
 
-  <div class="container">
-    <div class="status" id="statusText">运行环境检测中…</div>
+  <iframe id="appFrame" src="sys1.html"></iframe>
 
-    <div class="grid">
-      <div class="card" onclick="go('sys1.html')">
-        <div class="card-title">加药加氯计算系统</div>
-        <div class="card-desc">日常投加量计算，支持现场快速核算。</div>
-      </div>
-      <div class="card" onclick="go('sys2.html')">
-        <div class="card-title">一期 / 二期混助配药系统</div>
-        <div class="card-desc">混助药剂配制计算，减少人工误差。</div>
-      </div>
-      <div class="card" onclick="go('sys3.html')">
-        <div class="card-title">药剂消耗核算系统</div>
-        <div class="card-desc">药剂消耗统计与运行分析。</div>
-      </div>
-      <div class="card" onclick="go('help.html')">
-        <div class="card-title">系统说明 / 使用须知</div>
-        <div class="card-desc">系统使用说明、离线说明与注意事项。</div>
-      </div>
-    </div>
-  </div>
+  <script>
+    const buttons = document.querySelectorAll('header button');
+    const frame = document.getElementById('appFrame');
 
-  <footer>
-    本系统支持离线使用（PWA），适用于生产运行环境
-    <div class="admin" id="adminEntry">管理员入口</div>
-  </footer>
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        frame.src = btn.dataset.page;
+      });
+    });
 
-<script>
-  function go(p){ location.href=p; }
-
-  function updateStatus() {
-    var online = navigator.onLine;
-    document.getElementById('statusText').innerText =
-      online ? '当前状态：在线（支持离线缓存）' : '当前状态：离线运行（PWA 模式）';
-  }
-  window.addEventListener('online', updateStatus);
-  window.addEventListener('offline', updateStatus);
-  updateStatus();
-
-  var count = 0;
-  document.querySelector('footer').addEventListener('click', function(){
-    count++;
-    if(count === 5){
-      document.getElementById('adminEntry').style.display='block';
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js');
+      });
     }
-  });
-
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js');
-  }
-</script>
+  </script>
 </body>
 </html>
