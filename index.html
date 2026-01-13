@@ -89,62 +89,6 @@ window.onerror=function(msg){
 })();
 </script>
 
-
-<style>
-/* === 消耗核算页面可视化优化 === */
-
-/* 表格改为纵向可视，不横向滚动 */
-.consumption-table{
-  width:100%;
-  border-collapse:collapse;
-  table-layout:fixed;
-}
-.consumption-table th,
-.consumption-table td{
-  border:1px solid #ddd;
-  padding:6px;
-  text-align:center;
-  font-size:14px;
-  word-break:break-all;
-}
-
-/* 输入框数字完整显示 */
-.consumption-table input{
-  width:100%;
-  box-sizing:border-box;
-  font-size:15px;
-  padding:6px;
-  text-align:right;
-}
-
-/* 大数字自动缩放显示（不截断） */
-.consumption-table input:focus{
-  font-size:16px;
-}
-
-/* 移动端：两行展示，避免左右滑 */
-@media (max-width: 768px){
-  .consumption-table thead{
-    display:none;
-  }
-  .consumption-table tr{
-    display:block;
-    margin-bottom:12px;
-    border:1px solid #ccc;
-  }
-  .consumption-table td{
-    display:flex;
-    justify-content:space-between;
-    padding:8px;
-  }
-  .consumption-table td::before{
-    content:attr(data-label);
-    font-weight:600;
-    color:#333;
-  }
-}
-</style>
-
 </head>
 
 <body>
