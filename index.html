@@ -3,94 +3,141 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>水厂药剂综合系统</title>
+  <title>水厂药剂计算系统平台</title>
 
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#1976d2" />
+  <meta name="theme-color" content="#0b5cff" />
 
   <style>
+    :root {
+      --primary: #0b5cff;
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text-main: #1f2937;
+      --text-sub: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: var(--text-main);
     }
+
     header {
-      background: #1976d2;
+      background: linear-gradient(135deg, #0b5cff, #3b82f6);
       color: #fff;
-      padding: 10px;
-      display: flex;
-      gap: 10px;
-    }
-    header button {
-      background: rgba(255,255,255,0.15);
-      border: none;
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    header button.active {
-      background: #fff;
-      color: #1976d2;
-    }
-    iframe {
-      flex: 1;
-      width: 100%;
-      border: none;
-    }
-    #updateBar {
-      display: none;
-      background: #ff9800;
-      color: #000;
-      padding: 10px;
+      padding: 18px 16px;
+      font-size: 18px;
+      font-weight: 600;
       text-align: center;
-      font-size: 14px;
+      letter-spacing: 1px;
     }
-    #updateBar button {
-      margin-left: 10px;
-      padding: 4px 10px;
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .intro {
+      font-size: 14px;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 18px 16px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-sub);
+      padding: 18px 0 28px;
     }
   </style>
 </head>
 
 <body>
-  <div id="updateBar">
-    🔔 系统已更新
-    <button onclick="location.reload()">点击刷新</button>
+  <header>水厂药剂计算系统平台</header>
+
+  <div class="container">
+    <div class="intro">
+      统一入口 · 工程计算 · 现场稳定运行
+    </div>
+
+    <div class="grid">
+      <div class="card" onclick="go('sys1.html')">
+        <div class="card-title">加药加氯计算系统</div>
+        <div class="card-desc">
+          用于水厂日常加药、加氯投加量计算，支持快速核算与现场使用。
+        </div>
+      </div>
+
+      <div class="card" onclick="go('sys2.html')">
+        <div class="card-title">一期 / 二期混助配药系统</div>
+        <div class="card-desc">
+          支持一期、二期混助药剂配制计算，减少人工误差，提高计算可靠性。
+        </div>
+      </div>
+
+      <div class="card" onclick="go('sys3.html')">
+        <div class="card-title">药剂消耗核算系统</div>
+        <div class="card-desc">
+          对药剂消耗进行统计与核算，辅助运行分析与管理决策。
+        </div>
+      </div>
+    </div>
   </div>
 
-  <header>
-    <button data-page="sys1.html" class="active">加药加氯</button>
-    <button data-page="sys2.html">配药系统</button>
-    <button data-page="sys3.html">药剂消耗</button>
-  </header>
-
-  <iframe id="appFrame" src="sys1.html"></iframe>
+  <footer>
+    © 水厂运行计算平台 · 内部工程系统
+  </footer>
 
   <script>
-    const buttons = document.querySelectorAll('header button');
-    const frame = document.getElementById('appFrame');
-
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        frame.src = btn.dataset.page;
-      });
-    });
+    function go(page) {
+      window.location.href = page;
+    }
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').then(reg => {
-        reg.addEventListener('updatefound', () => {
-          const newWorker = reg.installing;
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              document.getElementById('updateBar').style.display = 'block';
-            }
-          });
-        });
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
       });
     }
   </script>
