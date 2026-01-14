@@ -89,6 +89,19 @@ window.onerror=function(msg){
 })();
 </script>
 
+
+<style>
+/* Step2: 消耗核算可视优化 */
+.consumption, .consume, .核算, .consumption-page { overflow-x: hidden !important; }
+input[type="number"], input[type="text"]{
+  width: 100%;
+  box-sizing: border-box;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.table, table { width:100%; }
+</style>
+
 </head>
 
 <body>
@@ -447,6 +460,19 @@ animation: fadeInOut 2s;
 0%, 100% { opacity: 0; }
 10%, 90% { opacity: 1; }
 }
+</style>
+
+
+<style>
+/* Step2: 消耗核算可视优化 */
+.consumption, .consume, .核算, .consumption-page { overflow-x: hidden !important; }
+input[type="number"], input[type="text"]{
+  width: 100%;
+  box-sizing: border-box;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.table, table { width:100%; }
 </style>
 
 </head>
@@ -1237,23 +1263,23 @@ window.addEventListener('load',()=>{
 
 
 <script>
-/* === 修复：消耗核算页面“下一个”跳转顺序异常 ===
-   原因：全页面 input 线性索引，跨时间段跳转
-   方案：按当前时间段容器内顺序聚焦
-*/
+/* Step2: 顺序输入控制（工程可用版） */
 (function(){
-  document.addEventListener('click', function(e){
-    if(!e.target.matches('[data-next]')) return;
-    const box = e.target.closest('[data-group]') || document;
-    const inputs = Array.from(box.querySelectorAll('input,select,textarea'))
-      .filter(el=>!el.disabled && el.offsetParent!==null);
-    const cur = document.activeElement;
-    const i = inputs.indexOf(cur);
-    if(i>-1 && inputs[i+1]){
-      inputs[i+1].focus();
-      e.preventDefault();
+  function getInputs(){
+    return Array.from(document.querySelectorAll('input'))
+      .filter(i=>!i.disabled && i.offsetParent!==null);
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+      const inputs = getInputs();
+      const idx = inputs.indexOf(document.activeElement);
+      if(idx > -1){
+        e.preventDefault();
+        const next = inputs[idx+1];
+        if(next){ setTimeout(()=>next.focus(), 0); }
+      }
     }
-  });
+  }, true);
 })();
 </script>
 
@@ -1386,6 +1412,19 @@ button:active{
   font-weight:bold;
 }
 </style>
+
+<style>
+/* Step2: 消耗核算可视优化 */
+.consumption, .consume, .核算, .consumption-page { overflow-x: hidden !important; }
+input[type="number"], input[type="text"]{
+  width: 100%;
+  box-sizing: border-box;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.table, table { width:100%; }
+</style>
+
 </head>
 <body>
 
@@ -1680,6 +1719,28 @@ function calcAidP2(){
 }
 </script>
 
+
+<script>
+/* Step2: 顺序输入控制（工程可用版） */
+(function(){
+  function getInputs(){
+    return Array.from(document.querySelectorAll('input'))
+      .filter(i=>!i.disabled && i.offsetParent!==null);
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+      const inputs = getInputs();
+      const idx = inputs.indexOf(document.activeElement);
+      if(idx > -1){
+        e.preventDefault();
+        const next = inputs[idx+1];
+        if(next){ setTimeout(()=>next.focus(), 0); }
+      }
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
 
@@ -1967,6 +2028,19 @@ font-size: 16px;
 z-index: 9999;
 animation: shake 0.5s;
 }
+</style>
+
+
+<style>
+/* Step2: 消耗核算可视优化 */
+.consumption, .consume, .核算, .consumption-page { overflow-x: hidden !important; }
+input[type="number"], input[type="text"]{
+  width: 100%;
+  box-sizing: border-box;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.table, table { width:100%; }
 </style>
 
 </head>
@@ -2284,6 +2358,28 @@ load();
 calc();
 </script>
 
+
+<script>
+/* Step2: 顺序输入控制（工程可用版） */
+(function(){
+  function getInputs(){
+    return Array.from(document.querySelectorAll('input'))
+      .filter(i=>!i.disabled && i.offsetParent!==null);
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+      const inputs = getInputs();
+      const idx = inputs.indexOf(document.activeElement);
+      if(idx > -1){
+        e.preventDefault();
+        const next = inputs[idx+1];
+        if(next){ setTimeout(()=>next.focus(), 0); }
+      }
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
 
@@ -2303,6 +2399,28 @@ document.querySelectorAll('input,select,textarea').forEach(el=>{
  if(localStorage.getItem(key)) el.value=localStorage.getItem(key);
  el.addEventListener('input',()=>localStorage.setItem(key,el.value));
 });
+</script>
+
+
+<script>
+/* Step2: 顺序输入控制（工程可用版） */
+(function(){
+  function getInputs(){
+    return Array.from(document.querySelectorAll('input'))
+      .filter(i=>!i.disabled && i.offsetParent!==null);
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+      const inputs = getInputs();
+      const idx = inputs.indexOf(document.activeElement);
+      if(idx > -1){
+        e.preventDefault();
+        const next = inputs[idx+1];
+        if(next){ setTimeout(()=>next.focus(), 0); }
+      }
+    }
+  }, true);
+})();
 </script>
 
 </body>
