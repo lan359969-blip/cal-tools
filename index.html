@@ -89,19 +89,6 @@ window.onerror=function(msg){
 })();
 </script>
 
-
-<style>
-/* Step2: 消耗核算可视优化 */
-.consumption, .consume, .核算, .consumption-page { overflow-x: hidden !important; }
-input[type="number"], input[type="text"]{
-  width: 100%;
-  box-sizing: border-box;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-.table, table { width:100%; }
-</style>
-
 </head>
 
 <body>
@@ -460,19 +447,6 @@ animation: fadeInOut 2s;
 0%, 100% { opacity: 0; }
 10%, 90% { opacity: 1; }
 }
-</style>
-
-
-<style>
-/* Step2: 消耗核算可视优化 */
-.consumption, .consume, .核算, .consumption-page { overflow-x: hidden !important; }
-input[type="number"], input[type="text"]{
-  width: 100%;
-  box-sizing: border-box;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-.table, table { width:100%; }
 </style>
 
 </head>
@@ -1263,23 +1237,26 @@ window.addEventListener('load',()=>{
 
 
 <script>
-/* Step2: 顺序输入控制（工程可用版） */
+/* STEP2 A-route interim: force visible-input order */
 (function(){
-  function getInputs(){
+  function getVisibleInputs(){
     return Array.from(document.querySelectorAll('input'))
-      .filter(i=>!i.disabled && i.offsetParent!==null);
+      .filter(i=>{
+        const r=i.getBoundingClientRect();
+        return r.width>0 && r.height>0 && !i.disabled;
+      });
   }
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Enter'){
-      const inputs = getInputs();
-      const idx = inputs.indexOf(document.activeElement);
-      if(idx > -1){
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){
+      const inputs=getVisibleInputs();
+      const idx=inputs.indexOf(document.activeElement);
+      if(idx>-1){
         e.preventDefault();
-        const next = inputs[idx+1];
-        if(next){ setTimeout(()=>next.focus(), 0); }
+        const next=inputs[idx+1];
+        if(next){ setTimeout(()=>next.focus(),0); }
       }
     }
-  }, true);
+  },true);
 })();
 </script>
 
@@ -1412,19 +1389,6 @@ button:active{
   font-weight:bold;
 }
 </style>
-
-<style>
-/* Step2: 消耗核算可视优化 */
-.consumption, .consume, .核算, .consumption-page { overflow-x: hidden !important; }
-input[type="number"], input[type="text"]{
-  width: 100%;
-  box-sizing: border-box;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-.table, table { width:100%; }
-</style>
-
 </head>
 <body>
 
@@ -1721,23 +1685,26 @@ function calcAidP2(){
 
 
 <script>
-/* Step2: 顺序输入控制（工程可用版） */
+/* STEP2 A-route interim: force visible-input order */
 (function(){
-  function getInputs(){
+  function getVisibleInputs(){
     return Array.from(document.querySelectorAll('input'))
-      .filter(i=>!i.disabled && i.offsetParent!==null);
+      .filter(i=>{
+        const r=i.getBoundingClientRect();
+        return r.width>0 && r.height>0 && !i.disabled;
+      });
   }
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Enter'){
-      const inputs = getInputs();
-      const idx = inputs.indexOf(document.activeElement);
-      if(idx > -1){
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){
+      const inputs=getVisibleInputs();
+      const idx=inputs.indexOf(document.activeElement);
+      if(idx>-1){
         e.preventDefault();
-        const next = inputs[idx+1];
-        if(next){ setTimeout(()=>next.focus(), 0); }
+        const next=inputs[idx+1];
+        if(next){ setTimeout(()=>next.focus(),0); }
       }
     }
-  }, true);
+  },true);
 })();
 </script>
 
@@ -2028,19 +1995,6 @@ font-size: 16px;
 z-index: 9999;
 animation: shake 0.5s;
 }
-</style>
-
-
-<style>
-/* Step2: 消耗核算可视优化 */
-.consumption, .consume, .核算, .consumption-page { overflow-x: hidden !important; }
-input[type="number"], input[type="text"]{
-  width: 100%;
-  box-sizing: border-box;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-.table, table { width:100%; }
 </style>
 
 </head>
@@ -2360,23 +2314,26 @@ calc();
 
 
 <script>
-/* Step2: 顺序输入控制（工程可用版） */
+/* STEP2 A-route interim: force visible-input order */
 (function(){
-  function getInputs(){
+  function getVisibleInputs(){
     return Array.from(document.querySelectorAll('input'))
-      .filter(i=>!i.disabled && i.offsetParent!==null);
+      .filter(i=>{
+        const r=i.getBoundingClientRect();
+        return r.width>0 && r.height>0 && !i.disabled;
+      });
   }
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Enter'){
-      const inputs = getInputs();
-      const idx = inputs.indexOf(document.activeElement);
-      if(idx > -1){
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){
+      const inputs=getVisibleInputs();
+      const idx=inputs.indexOf(document.activeElement);
+      if(idx>-1){
         e.preventDefault();
-        const next = inputs[idx+1];
-        if(next){ setTimeout(()=>next.focus(), 0); }
+        const next=inputs[idx+1];
+        if(next){ setTimeout(()=>next.focus(),0); }
       }
     }
-  }, true);
+  },true);
 })();
 </script>
 
@@ -2403,23 +2360,26 @@ document.querySelectorAll('input,select,textarea').forEach(el=>{
 
 
 <script>
-/* Step2: 顺序输入控制（工程可用版） */
+/* STEP2 A-route interim: force visible-input order */
 (function(){
-  function getInputs(){
+  function getVisibleInputs(){
     return Array.from(document.querySelectorAll('input'))
-      .filter(i=>!i.disabled && i.offsetParent!==null);
+      .filter(i=>{
+        const r=i.getBoundingClientRect();
+        return r.width>0 && r.height>0 && !i.disabled;
+      });
   }
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Enter'){
-      const inputs = getInputs();
-      const idx = inputs.indexOf(document.activeElement);
-      if(idx > -1){
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){
+      const inputs=getVisibleInputs();
+      const idx=inputs.indexOf(document.activeElement);
+      if(idx>-1){
         e.preventDefault();
-        const next = inputs[idx+1];
-        if(next){ setTimeout(()=>next.focus(), 0); }
+        const next=inputs[idx+1];
+        if(next){ setTimeout(()=>next.focus(),0); }
       }
     }
-  }, true);
+  },true);
 })();
 </script>
 
